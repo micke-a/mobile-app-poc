@@ -1,0 +1,2 @@
+
+See @.spec/constitution.md
