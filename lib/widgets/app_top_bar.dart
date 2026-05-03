@@ -5,9 +5,10 @@ import 'package:go_router/go_router.dart';
 import '../providers/order_providers.dart';
 
 class AppTopBar extends ConsumerWidget implements PreferredSizeWidget {
-  const AppTopBar({super.key, required this.title});
+  const AppTopBar({super.key, required this.title, this.extraActions});
 
   final String title;
+  final List<Widget>? extraActions;
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -28,6 +29,7 @@ class AppTopBar extends ConsumerWidget implements PreferredSizeWidget {
       title: Text(title),
       centerTitle: true,
       actions: [
+        ...?extraActions,
         IconButton(
           icon: const Icon(Icons.search),
           tooltip: 'Search products',

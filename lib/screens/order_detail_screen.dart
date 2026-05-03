@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../models/order.dart';
 import '../providers/order_providers.dart';
@@ -21,8 +22,23 @@ class OrderDetailScreen extends ConsumerWidget {
             (current.value?.id == orderId ? current.value : null);
     final isCurrent = current.value?.id == orderId;
 
+    void shareOrder() {
+      if (order == null || order.products.isEmpty) return;
+      final text = order.products.map((p) => p.name).join('\n');
+      Share.share(text);
+    }
+
     return Scaffold(
-      appBar: const AppTopBar(title: 'Order'),
+      appBar: AppTopBar(
+        title: 'Order',
+        extraActions: [
+          IconButton(
+            icon: const Icon(Icons.share),
+            tooltip: 'Share order',
+            onPressed: order != null && order.products.isNotEmpty ? shareOrder : null,
+          ),
+        ],
+      ),
       body: list.isLoading || current.isLoading
           ? const Center(child: CircularProgressIndicator())
           : order == null
