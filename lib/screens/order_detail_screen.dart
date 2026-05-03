@@ -59,6 +59,15 @@ class OrderDetailScreen extends ConsumerWidget {
                                   return ListTile(
                                     title: Text(p.name),
                                     subtitle: Text(p.shop.name),
+                                    trailing: isCurrent
+                                        ? IconButton(
+                                            icon: const Icon(Icons.remove_shopping_cart),
+                                            tooltip: 'Remove from order',
+                                            onPressed: () => ref
+                                                .read(currentOrderProvider.notifier)
+                                                .toggleProduct(p),
+                                          )
+                                        : null,
                                   );
                                 },
                               ),

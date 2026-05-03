@@ -11,6 +11,9 @@ class OrdersScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final orders = ref.watch(orderListProvider);
+    final current = ref.watch(currentOrderProvider);
+    final currentId = current.value?.id;
+
     return Scaffold(
       appBar: const AppTopBar(title: 'Orders'),
       body: orders.when(
@@ -22,23 +25,42 @@ class OrdersScreen extends ConsumerWidget {
             itemCount: list.length,
             itemBuilder: (_, i) {
               final order = list[i];
+              final isCurrent = order.id == currentId;
               return ListTile(
                 title: Text('Order ${order.id.substring(0, 8)}'),
                 subtitle: Text(
                   '${order.products.length} item(s) - '
                   '${order.createdDate.toLocal()}',
                 ),
-                trailing: IconButton(
-                  icon: const Icon(Icons.shopping_cart_checkout),
-                  tooltip: 'Set as current order',
-                  onPressed: () async {
-                    await ref
-                        .read(currentOrderProvider.notifier)
-                        .setFromList(order);
-                    if (!context.mounted) return;
-                    context.push('/order/${order.id}');
-                  },
-                ),
+                trailing: isCurrent
+                    ? Chip(
+                        avatar: Icon(
+                          Icons.shopping_cart,
+                          size: 16,
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
+                        label: Text(
+                          'Current',
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.onPrimary,
+                            fontSize: 12,
+                          ),
+                        ),
+                        backgroundColor:
+                            Theme.of(context).colorScheme.primary,
+                        padding: EdgeInsets.zero,
+                      )
+                    : TextButton.icon(
+                        icon: const Icon(Icons.shopping_cart_checkout, size: 16),
+                        label: const Text('Set current'),
+                        onPressed: () async {
+                          await ref
+                              .read(currentOrderProvider.notifier)
+                              .setFromList(order);
+                          if (!context.mounted) return;
+                          context.push('/order/${order.id}');
+                        },
+                      ),
                 onTap: () => context.push('/order/${order.id}'),
               );
             },

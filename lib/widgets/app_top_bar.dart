@@ -44,6 +44,11 @@ class AppTopBar extends ConsumerWidget implements PreferredSizeWidget {
             }
           },
         ),
+        IconButton(
+          icon: const Icon(Icons.home_outlined),
+          tooltip: 'Home',
+          onPressed: () => context.go('/home'),
+        ),
       ],
     );
   }

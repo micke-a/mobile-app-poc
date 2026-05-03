@@ -36,7 +36,14 @@ class HomeScreen extends ConsumerWidget {
               icon: Icons.shopping_cart_outlined,
               backgroundColor: colorScheme.primaryContainer,
               foregroundColor: colorScheme.onPrimaryContainer,
-              onTap: () => context.push('/orders'),
+              onTap: () {
+                final order = currentOrderAsync.value;
+                if (order != null) {
+                  context.push('/order/${order.id}');
+                } else {
+                  context.push('/orders');
+                }
+              },
             ),
             const SizedBox(height: 12),
             _StatCard(
