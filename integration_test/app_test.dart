@@ -10,8 +10,8 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('MyApp'), findsOneWidget);
-    expect(find.text('Products'), findsOneWidget);
-    expect(find.text('Favourites'), findsOneWidget);
+    expect(find.text('Current order'), findsOneWidget);
     expect(find.text('Orders'), findsOneWidget);
+    expect(find.text('Products by shop'), findsOneWidget);
   });
 }

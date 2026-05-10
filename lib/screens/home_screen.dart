@@ -52,6 +52,8 @@ class HomeScreen extends ConsumerWidget {
                   ? null
                   : '${ordersAsync.value?.length ?? 0}',
               icon: Icons.receipt_long_outlined,
+              backgroundColor: colorScheme.secondaryContainer,
+              foregroundColor: colorScheme.onSecondaryContainer,
               onTap: () => context.push('/orders'),
             ),
             const SizedBox(height: 24),
@@ -94,9 +96,22 @@ class HomeScreen extends ConsumerWidget {
       itemBuilder: (context, i) {
         final shop = shops[i];
         final count = products.where((p) => p.shop.id == shop.id).length;
+        final cs = Theme.of(context).colorScheme;
+        final bg = switch (i % 3) {
+          0 => cs.tertiaryContainer,
+          1 => cs.secondaryContainer,
+          _ => cs.primaryContainer,
+        };
+        final fg = switch (i % 3) {
+          0 => cs.onTertiaryContainer,
+          1 => cs.onSecondaryContainer,
+          _ => cs.onPrimaryContainer,
+        };
         return _ShopCard(
           name: shop.name,
           count: count,
+          backgroundColor: bg,
+          foregroundColor: fg,
           onTap: () => context.push('/products/shop/${shop.id}'),
         );
       },
@@ -179,19 +194,23 @@ class _ShopCard extends StatelessWidget {
   const _ShopCard({
     required this.name,
     required this.count,
+    required this.backgroundColor,
+    required this.foregroundColor,
     required this.onTap,
   });
 
   final String name;
   final int count;
+  final Color backgroundColor;
+  final Color foregroundColor;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
     return Card(
+      color: backgroundColor,
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: onTap,
@@ -204,14 +223,14 @@ class _ShopCard extends StatelessWidget {
               Text(
                 '$count',
                 style: textTheme.headlineSmall?.copyWith(
-                  color: colorScheme.primary,
+                  color: foregroundColor,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 4),
               Text(
                 name,
-                style: textTheme.bodyMedium,
+                style: textTheme.bodyMedium?.copyWith(color: foregroundColor),
                 overflow: TextOverflow.ellipsis,
               ),
             ],

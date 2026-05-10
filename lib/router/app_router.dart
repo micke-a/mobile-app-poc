@@ -9,11 +9,13 @@ import '../screens/orders_screen.dart';
 import '../screens/product_detail_screen.dart';
 import '../screens/products_by_shop_screen.dart';
 import '../screens/products_screen.dart';
+import '../screens/splash_screen.dart';
 
 final appRouterProvider = Provider<GoRouter>((ref) {
   return GoRouter(
-    initialLocation: '/home',
+    initialLocation: '/splash',
     routes: [
+      GoRoute(path: '/splash', builder: (_, _) => const SplashScreen()),
       GoRoute(path: '/home', builder: (_, _) => const HomeScreen()),
       GoRoute(
         path: '/products',

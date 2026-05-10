@@ -25,7 +25,7 @@ class OrderDetailScreen extends ConsumerWidget {
     void shareOrder() {
       if (order == null || order.products.isEmpty) return;
       final text = order.products.map((p) => p.name).join('\n');
-      Share.share(text);
+      SharePlus.instance.share(ShareParams(text: text));
     }
 
     return Scaffold(
