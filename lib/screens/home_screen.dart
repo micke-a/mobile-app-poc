@@ -8,6 +8,7 @@ import '../providers/order_providers.dart';
 import '../providers/product_providers.dart';
 import '../providers/shop_providers.dart';
 import '../widgets/app_top_bar.dart';
+import '../widgets/voice_add_sheet.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -23,6 +24,15 @@ class HomeScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: const AppTopBar(title: 'MyApp'),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          builder: (_) => const VoiceAddSheet(),
+        ),
+        icon: const Icon(Icons.mic),
+        label: const Text('Voice add'),
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
